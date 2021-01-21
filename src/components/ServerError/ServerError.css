@@ -1,0 +1,41 @@
+.server-error {
+    padding: 80px 0;
+    width: 100%;
+    height: 282px;
+    margin: 0;
+    background-color: rgba(245, 246, 247, 1);
+    position: relative;
+    display: none;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.server-error_opened {
+    display: flex;
+}
+
+.server-error__title {
+    margin: auto;
+    font-family: 'Roboto Slab';
+    max-width: 600px;
+    font-size: 22px;
+    line-height: 30px;
+    color: rgba(182, 188, 191, 1);
+}
+
+@media screen and (max-width: 1250px) {
+    .server-error {
+        height: 204px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .server-error__title {
+        max-width: 300px;
+        font-size: 18px;
+        line-height: 22px;
+    }
+    .server-error {
+        height: 288px;
+    }
+}

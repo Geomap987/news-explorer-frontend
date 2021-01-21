@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import NewsCard from '../NewsCard/NewsCard.js'
 import './NewsCardList.css'
-import initialCards from '../../data/cardsData.js'
 
-function NewsCardList({ isUserLoggedIn, theme }) {
+function NewsCardList({ isUserLoggedIn, theme, active, initialArticles, savedArticles, onSaveClick, onDeleteClick, keyWord }) {
 
     const [row, setRow] = useState(3)
 
@@ -11,31 +10,36 @@ function NewsCardList({ isUserLoggedIn, theme }) {
         setRow(row + 3)
     }
 
+    const articlesAmount = initialArticles.length
 
-    let elementsToRender = initialCards.slice(0, row)
+    let elementsToRender = initialArticles.slice(0, row)
 
     return (
-        <section className="card-list">
+        <section className={active ? "card-list" : "card-list card-list_closed"}>
             {theme === 'searchCards' ? <h2 className="card-list__results-title">Результаты поиска</h2> : <></>}
             <div className="card-list__container">
                 {theme==='searchCards' ?
-                    (elementsToRender.map(card =>
+                    (elementsToRender.map((card, i) =>
                     <NewsCard
                         theme={theme}
                         isUserLoggedIn={isUserLoggedIn}
-                        keyWord={card.keyword}
+                        keyWord={keyWord}
                         title={card.title}
-                        text={card.text}
-                        date={card.date}
-                        source={card.source}
-                        link={card.link}
-                        image={card.image}
-                        isOwn={true}
+                        text={card.description}
+                        date={card.publishedAt}
+                        source={card.source.name}
+                        link={card.url}
+                        image={card.urlToImage}
+                        item={card}
+                        onSaveClick={onSaveClick}
+                        onDeleteClick={onDeleteClick}
+                        key={i}
                     />)) :
-                    (initialCards.map(card =>
+                    (savedArticles.map((card, i) =>
                     <NewsCard
                         theme={theme}
                         isUserLoggedIn={isUserLoggedIn}
+                        onDeleteClick={onDeleteClick}
                         keyWord={card.keyword}
                         title={card.title}
                         text={card.text}
@@ -43,10 +47,11 @@ function NewsCardList({ isUserLoggedIn, theme }) {
                         source={card.source}
                         link={card.link}
                         image={card.image}
-                        isOwn={true}
+                        item={card}
+                        key={i}
                     />))}
             </div>
-            {theme === 'searchCards' ? <button onClick={nextRow}className="card-list__button">Показать еще</button> : <></>}
+            {theme === 'searchCards' && row <= articlesAmount ? <button onClick={nextRow} className="card-list__button">Показать еще</button> : <></>}
         </section>
     );
 }

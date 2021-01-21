@@ -6,6 +6,10 @@
     background-color: rgba(245, 246, 247, 1);
 }
 
+.card-list_closed {
+    display: none;
+}
+
 .card-list__results-title {
     width: 1232px;
     font-family: 'Roboto Slab';

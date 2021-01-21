@@ -59,6 +59,10 @@
     color: #B6BCBF;
 }
 
+.search-form__input:focus {
+    background:rgb(255, 255, 255, 0.9)
+}
+
 .search-form__input:focus::placeholder {
     color: transparent;
 }

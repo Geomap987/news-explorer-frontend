@@ -1,6 +1,5 @@
 import React from 'react';
 import '../PopupWithForm/PopupWithForm.css';
-import { Link } from 'react-router-dom';
 
 function InfoToolTip({ onClose, isOpen, goToSignInPopup, overlayClose }) {
 
@@ -15,7 +14,7 @@ function InfoToolTip({ onClose, isOpen, goToSignInPopup, overlayClose }) {
             <div className="popup__container ">
                 <button onClick={onClose} type="button" className="popup__close-button"></button>
                 <p className="popup__title">Пользователь успешно зарегистрирован!</p>
-                <Link onClick={goToSignInPopup} className="popup__signin-link">Войти</Link>
+                <p onClick={goToSignInPopup} className="popup__signin-link">Войти</p>
             </div>
         </section>
     );

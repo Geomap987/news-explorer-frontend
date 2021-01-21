@@ -37,14 +37,11 @@
 
 @media screen and (max-width: 1250px) {
     .preloader {
-        height: 204px;
+        height: 288px;
     }
 }
 
 @media screen and (max-width: 700px) {
-    .preloader {
-        height: 288px;
-    }
     .preloader__circle {
         top: 35%;
         left: 40%;

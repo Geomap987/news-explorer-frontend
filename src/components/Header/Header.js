@@ -3,9 +3,13 @@ import { Link } from 'react-router-dom';
 import './Header.css'
 import whiteLogoutImage from '../../images/logout.svg'
 import blackLogoutImage from '../../images/logout-black.svg'
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 
 function Header({ isNavigationOpened, openNavigationHandler, userLoggedIn, theme, openSignInPopup, logOut }) {
+    const currentUser = React.useContext(CurrentUserContext);
+
+    console.log(userLoggedIn)
  
     return (
         <header>
@@ -20,8 +24,8 @@ function Header({ isNavigationOpened, openNavigationHandler, userLoggedIn, theme
                     <button className={userLoggedIn ? `header__invisible-button header__invisible-button_${theme}` : `header__invisible-button_hidden`}>
                         <Link to="/saved-news" className={`header__item header__item_${theme}`}>Сохраненные статьи</Link>
                     </button>
-                    <button className={`header__button header__button_${theme}`}>
-                        <Link className={`header__item header__item_${theme}`} onClick={userLoggedIn ? logOut : openSignInPopup}>{userLoggedIn ? `Пупырка` : `Авторизоваться`}</Link>
+                    <button className={`header__button header__button_${theme}`} onClick={userLoggedIn ? logOut : openSignInPopup}>
+                        <div className={`header__item header__item_${theme}`}>{userLoggedIn ? currentUser.name : `Авторизоваться`}</div>
                         <img className={userLoggedIn ? `header__button-image header__button-image_active` : `header__button-image`}
                             src={theme === 'white' ? whiteLogoutImage : blackLogoutImage}
                             alt="выход" />

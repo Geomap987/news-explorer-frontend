@@ -112,6 +112,11 @@
     color: rgb(182, 188, 191);
 }
 
+.popup__submit-button_disabled:hover {
+    background-color: rgb(230, 232, 235);
+    color: rgb(182, 188, 191);
+}
+
 .popup__api-error {
     width: 83%;
     margin-top: 32px;
@@ -161,23 +166,18 @@
 
 .popup__signup {
     display: flex;
-    align-items: center;
-    justify-content: center;
     margin-top: 0;
     margin-bottom: 28px;
-    height: 17px;
-}
-
-.popup__signup p {
     font-family: 'Inter';
-    margin-right: 6px;
     font-size: 14px;
     line-height: 17px;
     color: rgb(0, 0, 0);
 }
 
+
 .popup__link {
     margin: 0;
+    margin-left: 6px;
     text-decoration: none;
     font-family: 'Inter';
     text-align: center;
@@ -185,6 +185,10 @@
     border: none;
     font-size: 14px;
     line-height: 17px;
+}
+
+.popup__link:hover{
+    cursor: pointer;
 }
 
 .popup__signin-link {
