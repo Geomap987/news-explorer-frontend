@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useEffect, useCallback, useState } from 'react';
-import { Route, useHistory, Switch} from 'react-router-dom';
+import { Route, useHistory, Switch } from 'react-router-dom';
 import * as auth from '../../utils/auth.js';
 import { getToken, setToken, removeToken } from '../../utils/token';
 
@@ -38,13 +38,14 @@ function App() {
   const [isServerError, setServerError] = React.useState(false);
   const [foundArticles, setFoundArticles] = React.useState([])
   const [apiErrorText, setApiErrorText] = useState('')
+  const [isSaved, setIsSaved] = useState(false)
 
   const history = useHistory();
 
   function toggleNavigation() {
     setNavigationOpened(!isNavigationOpened)
   }
-  
+
   function logOut() {
     setUserLoggedIn(false)
     history.push('/')
@@ -104,26 +105,6 @@ function App() {
         closeAllPopups();
       }
     }, [])
-
-  useEffect(() => {
-    document.addEventListener('keyup', handleEscPress, false);
-    return () => {
-      document.removeEventListener('keyup', handleEscPress, false);
-    };
-  }, [handleEscPress])
-
-  useEffect(() => {
-    mainApi.getInitialInfo().then(
-      (res) => {
-        const items = res[1]
-        setSavedArticles(items)
-      }).catch((err) => {console.log(err);
-        setUserLoggedIn(false)});
-  }, [])
-
-  useEffect(() => {
-    tokenCheck();
-  }, []);
 
   //регистрация и авторизация
   const authorization = (email, password) => {
@@ -203,10 +184,11 @@ function App() {
       if (res.totalResults !== 0) {
         setStartSearching(false)
         setHaveResults(true)
-        console.log(res)
         const foundItems = res.articles;
-        console.log(typeof (foundItems))
-        setFoundArticles(foundItems)
+        localStorage.setItem('foundItems', JSON.stringify(foundItems))
+        const foundItemsLocal = JSON.parse(localStorage.getItem(foundItems))
+        console.log(foundItemsLocal)
+        setFoundArticles(foundItemsLocal)
       }
       else {
         setStartSearching(false)
@@ -220,7 +202,7 @@ function App() {
 
   // сохранение статей
   function handleSaveClick(card) {
-    // console.log(card)
+    setIsSaved(true)
     mainApi.createCard({
       keyword: keyWord,
       title: card.title,
@@ -250,6 +232,32 @@ function App() {
       return !pos || item !== ary[pos - 1];
     });
   }
+
+  useEffect(() => {
+    document.addEventListener('keyup', handleEscPress, false);
+    return () => {
+      document.removeEventListener('keyup', handleEscPress, false);
+    };
+  }, [handleEscPress])
+
+  useEffect(() => {
+    mainApi.getInitialInfo().then(
+      (res) => {
+        const foundItemsLocal = JSON.parse(localStorage.getItem('foundItems'))
+        console.log(foundItemsLocal)
+        setFoundArticles(foundItemsLocal)
+        console.log(foundArticles)
+        const items = res[1]
+        setSavedArticles(items)
+      }).catch((err) => {
+        console.log(err);
+        setUserLoggedIn(false)
+      });
+  }, [])
+
+  useEffect(() => {
+    tokenCheck();
+  }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import NewsCard from '../NewsCard/NewsCard.js'
 import './NewsCardList.css'
 
-function NewsCardList({ isUserLoggedIn, theme, active, initialArticles, savedArticles, onSaveClick, onDeleteClick, keyWord }) {
+function NewsCardList({ isUserLoggedIn, theme, active, initialArticles, savedArticles, onSaveClick, onDeleteClick, keyWord, isSaved }) {
 
     const [row, setRow] = useState(3)
 
@@ -34,6 +34,7 @@ function NewsCardList({ isUserLoggedIn, theme, active, initialArticles, savedArt
                         onSaveClick={onSaveClick}
                         onDeleteClick={onDeleteClick}
                         key={i}
+                        isSaved={isSaved}
                     />)) :
                     (savedArticles.map((card, i) =>
                     <NewsCard

@@ -64,5 +64,6 @@ class MainApi {
 }
 
   export const mainApi = new MainApi({
-    address: 'https://api.geomap.students.nomoreparties.space',
+    // address: 'https://api.geomap.students.nomoreparties.space',
+    address: 'http://localhost:3000'
   });

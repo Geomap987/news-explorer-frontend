@@ -3,13 +3,13 @@ import moment from 'moment';
 import 'moment/locale/ru'
 import './NewsCard.css'
 
-function NewsCard({ title, text, date, source, link, image, onDeleteClick, keyWord, theme, isUserLoggedIn, item, onSaveClick }) {
-    const [isSaved, setIsSaved] = useState(false)
+function NewsCard({ title, text, date, source, link, image, onDeleteClick, keyWord, theme, isUserLoggedIn, item, onSaveClick, isSaved }) {
+    // const [isSaved, setIsSaved] = useState(false)
     const [isDeleteClicked, setDeleteClicked] = useState(false)
     const [isFlagClicked, setFlagClicked] = useState(false)
 
     function handleSaveClick() {
-        setIsSaved(!isSaved);
+        // setIsSaved(!isSaved);
         onSaveClick(item);
     }
     function handleDeleteClick() {
