@@ -8,8 +8,6 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Header({ isNavigationOpened, openNavigationHandler, userLoggedIn, theme, openSignInPopup, logOut }) {
     const currentUser = React.useContext(CurrentUserContext);
-
-    console.log(userLoggedIn)
  
     return (
         <header>

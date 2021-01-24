@@ -13,6 +13,7 @@ import Register from '../Register/Register.js';
 import Login from '../Login/Login.js';
 import InfoToolTip from '../InfoToolTip/InfoToolTip.js';
 import Preloader from '../Preloader/Preloader.js';
+import RequestPreloader from '../RequestPreloader/RequestPreloader.js';
 import NewsCardList from '../NewsCardList/NewsCardList.js';
 import SavedNews from '../SavedNews/SavedNews.js';
 import NoNewsFound from '../NoNewsFound/NoNewsFound.js';
@@ -26,29 +27,24 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [savedArticles, setSavedArticles] = React.useState([]);
   const [keyWord, setKeyWord] = React.useState('');
-
   const [isNavigationOpened, setNavigationOpened] = React.useState(false);
   const [isUserLoggedIn, setUserLoggedIn] = React.useState(false);
   const [isSignInPopupOpened, setSignInPopupOpened] = React.useState(false);
   const [isSignUpPopupOpened, setSignUpPopupOpened] = React.useState(false);
   const [isInfoToolTipOpened, setInfoToolTipOpened] = React.useState(false);
   const [isStartSerching, setStartSearching] = React.useState(false);
+  const [isWaitingResponse, setWaitingResponse] = React.useState(false);
+  
   const [isHaveResults, setHaveResults] = React.useState(false);
   const [isNoResults, setNoResults] = React.useState(false);
   const [isServerError, setServerError] = React.useState(false);
   const [foundArticles, setFoundArticles] = React.useState([])
   const [apiErrorText, setApiErrorText] = useState('')
-  const [isSaved, setIsSaved] = useState(false)
 
   const history = useHistory();
 
   function toggleNavigation() {
     setNavigationOpened(!isNavigationOpened)
-  }
-
-  function logOut() {
-    setUserLoggedIn(false)
-    history.push('/')
   }
 
   function openSignInPopup() {
@@ -108,11 +104,10 @@ function App() {
 
   //регистрация и авторизация
   const authorization = (email, password) => {
-    console.log(email)
-    console.log(password)
+    setWaitingResponse(true)
     auth.authorize(email, password)
       .then((data) => {
-        console.log(data)
+        setWaitingResponse(false)
         if (!data) {
           setApiErrorText('Что-то пошло не так! Попробуйте еще раз.')
         }
@@ -136,8 +131,9 @@ function App() {
   }
 
   const registration = (name, email, password) => {
+    setWaitingResponse(true)
     auth.register(name, email, password).then((res) => {
-      console.log(res)
+      setWaitingResponse(false)
       if (res.status === 200) {
         goToInfoToolTipPopup()
       } else {
@@ -169,6 +165,7 @@ function App() {
 
   function signOut() {
     removeToken();
+    localStorage.clear()
     setUserLoggedIn(false)
     history.push('/');
   }
@@ -177,6 +174,9 @@ function App() {
   function handleSearchWord(a) {
     const word = a.searchWord;
     setKeyWord(word)
+    localStorage.removeItem('keyWord')
+    localStorage.setItem('keyWord', JSON.stringify(word))
+    setHaveResults(false)
     setNoResults(false)
     setStartSearching(true)
     setServerError(false);
@@ -185,9 +185,10 @@ function App() {
         setStartSearching(false)
         setHaveResults(true)
         const foundItems = res.articles;
+        foundItems.forEach((item) => item.isSaved = false)
+        localStorage.removeItem('foundItems')
         localStorage.setItem('foundItems', JSON.stringify(foundItems))
-        const foundItemsLocal = JSON.parse(localStorage.getItem(foundItems))
-        console.log(foundItemsLocal)
+        const foundItemsLocal = JSON.parse(localStorage.getItem('foundItems'))
         setFoundArticles(foundItemsLocal)
       }
       else {
@@ -195,14 +196,14 @@ function App() {
         setNoResults(true)
       }
     }).catch((err) => {
-      setServerError(true);
+      setStartSearching(false)
+      setServerError(true)
       console.log(err)
     });
   }
 
   // сохранение статей
   function handleSaveClick(card) {
-    setIsSaved(true)
     mainApi.createCard({
       keyword: keyWord,
       title: card.title,
@@ -213,14 +214,15 @@ function App() {
       image: card.urlToImage,
     }).then(
       (newCard) => {
-        console.log(newCard)
+        card._id = newCard._id;
+        card.isSaved = true;
         setSavedArticles([...savedArticles, newCard])
       }).catch((err) => console.log(err));
   }
 
   function handleDeleteClick(card) {
-    console.log(card)
     mainApi.deleteCard(card._id).then((newCard) => {
+      card.isSaved = false;
       const newCards = savedArticles.filter((c) => c._id !== card._id);
       setSavedArticles(newCards);
     }).catch((err) => console.log(err));
@@ -240,13 +242,22 @@ function App() {
     };
   }, [handleEscPress])
 
+
   useEffect(() => {
+ 
+    tokenCheck();
+  }, []);
+
+  useEffect(() => {
+    const foundItemsLocal = JSON.parse(localStorage.getItem('foundItems'))
+    const word = JSON.parse(localStorage.getItem('keyWord'))
+    if (foundItemsLocal !== null) {
+      setFoundArticles(foundItemsLocal)
+      setKeyWord(word)
+      setHaveResults(true)
+    }
     mainApi.getInitialInfo().then(
       (res) => {
-        const foundItemsLocal = JSON.parse(localStorage.getItem('foundItems'))
-        console.log(foundItemsLocal)
-        setFoundArticles(foundItemsLocal)
-        console.log(foundArticles)
         const items = res[1]
         setSavedArticles(items)
       }).catch((err) => {
@@ -255,9 +266,6 @@ function App() {
       });
   }, [])
 
-  useEffect(() => {
-    tokenCheck();
-  }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -275,6 +283,7 @@ function App() {
             <SearchForm
               onSearchWord={handleSearchWord}></SearchForm>
             <Preloader active={isStartSerching}></Preloader>
+            <RequestPreloader active={isWaitingResponse}></RequestPreloader>
             <NoNewsFound active={isNoResults} />
             <ServerError active={isServerError} />
             <NewsCardList
@@ -283,6 +292,8 @@ function App() {
               isUserLoggedIn={isUserLoggedIn}
               initialArticles={foundArticles}
               onSaveClick={handleSaveClick}
+              onDeleteClick={handleDeleteClick}
+              openSignUpPopup={openSignUpPopup}
               keyWord={keyWord} />
             <About></About>
             <Footer></Footer>
@@ -310,9 +321,10 @@ function App() {
             </InfoToolTip>
           </Route>
           <ProtectedRoute path="/saved-news" loggedIn={isUserLoggedIn} component={SavedNews}
+          openSignInPopup={openSignInPopup}
             isNavigationOpened={isNavigationOpened}
             openNavigationHandler={toggleNavigation}
-            logOut={logOut}
+            logOut={signOut}
             savedArticlesAmount={savedArticles.length}
             keyWordsArray={keyWordsArray()}
             isUserLoggedIn={isUserLoggedIn}

@@ -1,7 +1,8 @@
 import moment from 'moment' 
+import {SEARCHDAYS} from './constants'
 const newsApiKey = '30e1c87cd2b74b209adae54026d65f1a';
 const today = moment().format()
-const weekAgo = moment().subtract(7, 'days').format()
+const weekAgo = moment().subtract(SEARCHDAYS, 'days').format()
 console.log(today)
 console.log(weekAgo)
 

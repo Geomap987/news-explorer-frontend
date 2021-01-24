@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import NewsCard from '../NewsCard/NewsCard.js'
 import './NewsCardList.css'
+import {CARDSINROW} from '../../utils/constants'
 
-function NewsCardList({ isUserLoggedIn, theme, active, initialArticles, savedArticles, onSaveClick, onDeleteClick, keyWord, isSaved }) {
-
-    const [row, setRow] = useState(3)
-
+function NewsCardList({ isUserLoggedIn, theme, active, initialArticles, savedArticles, onSaveClick, onDeleteClick, keyWord, isSaved, openSignUpPopup }) {
+    const [row, setRow] = useState(CARDSINROW)
+    
     function nextRow() {
-        setRow(row + 3)
+        setRow(row + CARDSINROW)
     }
 
     const articlesAmount = initialArticles.length
@@ -31,10 +31,11 @@ function NewsCardList({ isUserLoggedIn, theme, active, initialArticles, savedArt
                         link={card.url}
                         image={card.urlToImage}
                         item={card}
+                        isSaved={card.isSaved}
                         onSaveClick={onSaveClick}
                         onDeleteClick={onDeleteClick}
+                        openSignUpPopup={openSignUpPopup}
                         key={i}
-                        isSaved={isSaved}
                     />)) :
                     (savedArticles.map((card, i) =>
                     <NewsCard

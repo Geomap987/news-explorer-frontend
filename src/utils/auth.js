@@ -1,7 +1,5 @@
 import { setToken } from './token';
 
-// export const BASE_URL = 'http://localhost:3000';
-
 export const BASE_URL = 'https://api.geomap.students.nomoreparties.space';
 
 export const register = (name, email, password) => {
@@ -31,7 +29,6 @@ export const authorize = (email, password) => {
     .then((data) => {
       if (data.token) {
         setToken(data.token);
-        console.log(data)
         return data;
       } else {
         return;
