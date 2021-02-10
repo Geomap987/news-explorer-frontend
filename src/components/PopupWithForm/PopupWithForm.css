@@ -1,0 +1,232 @@
+.popup {
+    top: 0;
+    left: 0;
+    display: flex;
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 5;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .8s ease-in-out;
+    -webkit-transition: opacity .8s ease-in-out;
+    -moz-transition: opacity .8s ease-in-out;
+}
+
+.popup_opened {
+    display: flex;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity ease 0.9s;
+}
+
+.popup_closed {
+    display: none;
+}
+
+.popup__container {
+    width: 430px;
+    min-height: 182px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    align-items: center;
+    transition: ease 0.9s;
+}
+
+.popup__close-button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    padding: 0;
+    background: url(../../images/menu-close.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    outline: none;
+    transition: opacity .5s ease;
+}
+
+.popup__close-button:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.popup__title {
+    font-family: 'Roboto';
+    width: 83%;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 28px;
+    margin-top: 34px;
+    margin-bottom: 0;
+    text-align: left;
+}
+
+.popup__subtitle {
+    margin-bottom: 8px;
+    margin-top: 31px;
+    font-family: 'Inter';
+    width: 83%;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: left;
+    color: rgb(47, 113, 229);
+}
+
+.popup__submit-button {
+    width: 83%;
+    height: 64px;
+    border-radius: 100px;
+    background-color: rgb(47, 113, 229);
+    margin: 8px 0 16px;
+    font-family: 'Roboto';
+    font-size: 18px;
+    line-height: 24px;
+    border: none;
+    color: white;
+    transition: opacity .5s ease;
+    outline: none;
+}
+
+.popup__submit-button:hover {
+    cursor: pointer;
+    background: rgb(52, 126, 255, 1);
+}
+
+.popup__submit-button:active {
+    cursor: pointer;
+    background: rgb(42, 101, 204, 1);
+}
+
+.popup__submit-button_disabled {
+    background-color: rgb(230, 232, 235);
+    color: rgb(182, 188, 191);
+}
+
+.popup__submit-button_disabled:hover {
+    background-color: rgb(230, 232, 235);
+    color: rgb(182, 188, 191);
+}
+
+.popup__api-error {
+    width: 83%;
+    margin-top: 32px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: #FF0000;
+    text-align: center;
+}
+
+.popup__input {
+    font-family: 'Inter';
+    width: 83%;
+    height: 28px;
+    font-size: 14px;
+    line-height: 17px;
+    margin-top: 0;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    outline: none;
+}
+
+.popup__input_invalid {
+    border-bottom: 1px solid #FF0000;
+}
+
+.popup__input::placeholder {
+    font-family: 'Roboto';
+    font-size: 16px;
+    line-height: 22px;
+    color: #B6BCBF;
+}
+
+.popup__input:focus::placeholder {
+    color: transparent;
+}
+
+.popup__input-error {
+    width: 83%;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: #FF0000;
+}
+
+.popup__signup {
+    display: flex;
+    margin-top: 0;
+    margin-bottom: 28px;
+    font-family: 'Inter';
+    font-size: 14px;
+    line-height: 17px;
+    color: rgb(0, 0, 0);
+}
+
+
+.popup__link {
+    margin: 0;
+    margin-left: 6px;
+    text-decoration: none;
+    font-family: 'Inter';
+    text-align: center;
+    color: rgb(47, 113, 229);
+    border: none;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.popup__link:hover{
+    cursor: pointer;
+}
+
+.popup__signin-link {
+    margin: 14px 36px 0;
+    text-decoration: none;
+    font-family: 'Inter';
+    align-self: flex-start;
+    text-align: center;
+    color: rgb(47, 113, 229);
+    border: none;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+@media screen and (max-width: 555px) {
+    .popup__container {
+        width: 320px;
+    }
+    .popup__title {
+        width: 90%;
+        margin: 16px 0 12px;
+    }
+    .popup__subtitle {
+        width: 90%;
+    }
+    .popup__submit-button {
+        width: 90%;
+    }
+    .popup__input {
+        width: 90%;
+    }
+    .popup__input-error {
+        width: 90%;
+    }
+    .popup__close-button {
+        width: 24px;
+        height: 24px;
+        top: -40px;
+        right: 15px;
+    }
+}
