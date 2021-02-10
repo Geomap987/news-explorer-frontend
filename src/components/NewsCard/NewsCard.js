@@ -3,7 +3,7 @@ import moment from 'moment';
 import 'moment/locale/ru'
 import './NewsCard.css'
 
-function NewsCard({ title, text, date, source, link, image, onDeleteClick, keyWord, theme, isUserLoggedIn, item, onSaveClick, isSaved, openSignUpPopup }) {
+function NewsCard({ title, text, date, source, link, image, onDeleteClick, onDeleteClickFromSaved, keyWord, theme, isUserLoggedIn, item, onSaveClick, isSaved, openSignUpPopup }) {
     const [isDeleteClicked, setDeleteClicked] = useState(false)
     const [isFlagClicked, setFlagClicked] = useState(false)
 
@@ -17,7 +17,7 @@ function NewsCard({ title, text, date, source, link, image, onDeleteClick, keyWo
         setDeleteClicked(!isDeleteClicked)
     }
     function handleDeleteArticle() {
-        onDeleteClick(item);
+        onDeleteClickFromSaved(item);
     }
     function handleFlagClick() {
         setFlagClicked(!isFlagClicked)

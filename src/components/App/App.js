@@ -34,7 +34,7 @@ function App() {
   const [isInfoToolTipOpened, setInfoToolTipOpened] = React.useState(false);
   const [isStartSerching, setStartSearching] = React.useState(false);
   const [isWaitingResponse, setWaitingResponse] = React.useState(false);
-  
+
   const [isHaveResults, setHaveResults] = React.useState(false);
   const [isNoResults, setNoResults] = React.useState(false);
   const [isServerError, setServerError] = React.useState(false);
@@ -42,6 +42,10 @@ function App() {
   const [apiErrorText, setApiErrorText] = useState('')
 
   const history = useHistory();
+
+  function generateId() {
+    return `f${(~~(Math.random() * 1e8)).toString(16)}`
+  }
 
   function toggleNavigation() {
     setNavigationOpened(!isNavigationOpened)
@@ -125,6 +129,7 @@ function App() {
           }).catch((err) => console.log(err));
       })
       .catch((err) => {
+        setWaitingResponse(false)
         setApiErrorText(err.message)
       });
 
@@ -141,6 +146,7 @@ function App() {
       }
     })
       .catch((err) => {
+        setWaitingResponse(false)
         console.log(err)
       })
   }
@@ -185,7 +191,10 @@ function App() {
         setStartSearching(false)
         setHaveResults(true)
         const foundItems = res.articles;
-        foundItems.forEach((item) => item.isSaved = false)
+        foundItems.forEach((item) => {
+          item.isSaved = false
+          item.lsId = generateId();
+        })
         localStorage.removeItem('foundItems')
         localStorage.setItem('foundItems', JSON.stringify(foundItems))
         const foundItemsLocal = JSON.parse(localStorage.getItem('foundItems'))
@@ -216,6 +225,11 @@ function App() {
       (newCard) => {
         card._id = newCard._id;
         card.isSaved = true;
+        const newFoundArticles = foundArticles.map((c) => c.lsId === card.lsId ? card : c);
+        localStorage.removeItem('foundItems')
+        localStorage.setItem('foundItems', JSON.stringify(newFoundArticles))
+        const foundItemsLocal = JSON.parse(localStorage.getItem('foundItems'))
+        setFoundArticles(foundItemsLocal)
         setSavedArticles([...savedArticles, newCard])
       }).catch((err) => console.log(err));
   }
@@ -225,6 +239,26 @@ function App() {
       card.isSaved = false;
       const newCards = savedArticles.filter((c) => c._id !== card._id);
       setSavedArticles(newCards);
+      const newFoundArticles = foundArticles.map((c) => c.lsId === card.lsId ? card : c);
+      localStorage.removeItem('foundItems')
+      localStorage.setItem('foundItems', JSON.stringify(newFoundArticles))
+      const foundItemsLocal = JSON.parse(localStorage.getItem('foundItems'))
+      setFoundArticles(foundItemsLocal)
+    }).catch((err) => console.log(err));
+  }
+
+  function handleDeleteClickFromSaved(card) {
+    mainApi.deleteCard(card._id).then((newCard) => {
+      const newCards = savedArticles.filter((c) => c._id !== card._id);
+      setSavedArticles(newCards);
+      const newFoundArticle = foundArticles.filter((c) => c._id === card._id);
+      newFoundArticle[0].isSaved = false
+      const newFoundArticles = foundArticles.map((c) => c.lsId === newFoundArticle.lsId ? newFoundArticle : c);
+      console.log(newFoundArticles)
+      localStorage.removeItem('foundItems')
+      localStorage.setItem('foundItems', JSON.stringify(newFoundArticles))
+      const foundItemsLocal = JSON.parse(localStorage.getItem('foundItems'))
+      setFoundArticles(foundItemsLocal)
     }).catch((err) => console.log(err));
   }
 
@@ -244,7 +278,7 @@ function App() {
 
 
   useEffect(() => {
- 
+
     tokenCheck();
   }, []);
 
@@ -321,7 +355,7 @@ function App() {
             </InfoToolTip>
           </Route>
           <ProtectedRoute path="/saved-news" loggedIn={isUserLoggedIn} component={SavedNews}
-          openSignInPopup={openSignInPopup}
+            openSignInPopup={openSignInPopup}
             isNavigationOpened={isNavigationOpened}
             openNavigationHandler={toggleNavigation}
             logOut={signOut}
@@ -330,7 +364,7 @@ function App() {
             isUserLoggedIn={isUserLoggedIn}
             initialArticles={foundArticles}
             savedArticles={savedArticles}
-            handleDeleteClick={handleDeleteClick}>
+            handleDeleteClickFromSaved={handleDeleteClickFromSaved}>
           </ProtectedRoute>
         </Switch>
       </div>

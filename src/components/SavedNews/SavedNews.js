@@ -3,7 +3,7 @@ import Header from '../Header/Header.js'
 import SavedNewsHeader from '../SavedNewsHeader/SavedNewsHeader.js'
 import NewsCardList from '../NewsCardList/NewsCardList.js'
 
-function SavedNews({isNavigationOpened, openNavigationHandler, logOut, savedArticlesAmount, initialArticles, savedArticles, keyWordsArray, isUserLoggedIn, foundArticles, handleDeleteClick }) {
+function SavedNews({isNavigationOpened, openNavigationHandler, logOut, savedArticlesAmount, initialArticles, savedArticles, keyWordsArray, isUserLoggedIn, foundArticles, handleDeleteClickFromSaved }) {
     return (
         <>
         <Header
@@ -23,7 +23,7 @@ function SavedNews({isNavigationOpened, openNavigationHandler, logOut, savedArti
             isUserLoggedIn={isUserLoggedIn}
             initialArticles={initialArticles}
             savedArticles={savedArticles}
-            onDeleteClick={handleDeleteClick} />
+            onDeleteClickFromSaved={handleDeleteClickFromSaved} />
         </>
     )
 }

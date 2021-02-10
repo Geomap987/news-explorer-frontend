@@ -3,7 +3,7 @@ import NewsCard from '../NewsCard/NewsCard.js'
 import './NewsCardList.css'
 import {CARDSINROW} from '../../utils/constants'
 
-function NewsCardList({ isUserLoggedIn, theme, active, initialArticles, savedArticles, onSaveClick, onDeleteClick, keyWord, isSaved, openSignUpPopup }) {
+function NewsCardList({ isUserLoggedIn, theme, active, initialArticles, savedArticles, onSaveClick, onDeleteClick, onDeleteClickFromSaved, keyWord, openSignUpPopup }) {
     const [row, setRow] = useState(CARDSINROW)
     
     function nextRow() {
@@ -34,6 +34,7 @@ function NewsCardList({ isUserLoggedIn, theme, active, initialArticles, savedArt
                         isSaved={card.isSaved}
                         onSaveClick={onSaveClick}
                         onDeleteClick={onDeleteClick}
+                        onDeleteClickFromSaved = {onDeleteClickFromSaved}
                         openSignUpPopup={openSignUpPopup}
                         key={i}
                     />)) :
@@ -42,6 +43,7 @@ function NewsCardList({ isUserLoggedIn, theme, active, initialArticles, savedArt
                         theme={theme}
                         isUserLoggedIn={isUserLoggedIn}
                         onDeleteClick={onDeleteClick}
+                        onDeleteClickFromSaved = {onDeleteClickFromSaved}
                         keyWord={card.keyword}
                         title={card.title}
                         text={card.text}
