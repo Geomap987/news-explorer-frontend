@@ -1,6 +1,6 @@
 import { setToken } from './token';
 
-export const BASE_URL = 'https://api.geomap.students.nomoreparties.space';
+export const BASE_URL = 'https://geomap-api.ml';
 
 
 export const register = (name, email, password) => {
