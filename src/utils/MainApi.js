@@ -64,6 +64,7 @@ class MainApi {
 }
 
   export const mainApi = new MainApi({
-    address: 'https://geomap-api.ml',
+    address: 'http://84.201.152.187',
+    // address: 'http://localhost:3000',
   
   });
