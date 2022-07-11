@@ -16,7 +16,7 @@ class NewsApi {
     }
 
     getNewsCardList(searchWord) {
-        return fetch(`${this._address}/v2/everything?q=${searchWord}&from=${this._from}&to=${this._to}&pageSize=${this._pageSize}`, {
+        return fetch(`${this._address}/v2/everything?q=${searchWord}&from=${this._from}&to=${this._to}&pageSize=${this._pageSize}&apiKey=${newsApiKey}`, {
             headers: {
                 authorization: newsApiKey,
             },
@@ -27,7 +27,7 @@ class NewsApi {
 }
 
 export const newsApi = new NewsApi({
-    address: 'https://newsapi.org',
+    address: 'https://nomoreparties.co/news',
     pageSize: 100, 
     from: weekAgo,
     to: today,
