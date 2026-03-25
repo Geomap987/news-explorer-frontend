@@ -1,6 +1,6 @@
 import { setToken } from './token';
 
-export const BASE_URL = 'http://84.201.152.187';
+export const BASE_URL = 'http://localhost:3000';
 // export const BASE_URL = 'http://localhost:3000';
 
 export const register = (name, email, password) => {

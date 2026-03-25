@@ -64,7 +64,6 @@ class MainApi {
 }
 
   export const mainApi = new MainApi({
-    address: 'http://84.201.152.187',
-    // address: 'http://localhost:3000',
+    address: 'http://localhost:3000',
   
   });

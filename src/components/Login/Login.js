@@ -35,7 +35,7 @@ const Login = ({ authorization, isOpen, overlayClose, goToAnotherPopup, onClose,
             {(email.isDirty && email.maxLengthError) && <span className='popup__input-error'>Максимальная длина: 40 символов</span>}
             <label className="popup__subtitle">Пароль</label>
             <input onChange={password.onChange} onBlur={password.onBlur}
-                type="text"
+                type="password"
                 name="password"
                 // value={data.password}
                 placeholder="Введите пароль"

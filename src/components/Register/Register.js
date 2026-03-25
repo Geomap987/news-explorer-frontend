@@ -35,7 +35,7 @@ const Register = ({ registration, isOpen, overlayClose, goToAnotherPopup, onClos
 
             <label className="popup__subtitle">Пароль</label>
             <input onChange={password.onChange} onBlur={password.onBlur}
-                type="text"
+                type="password"
                 name="password"
                 placeholder="Введите пароль"
                 className="popup__input popup__input_subtitle" />
